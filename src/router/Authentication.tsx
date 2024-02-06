@@ -21,18 +21,18 @@ const TermAndCondition = Loader(
       import('src/components/Authentication/TermAndConditions/TermAndCondition')
   )
 );
-const SchoolList = Loader(
-  lazy(() => import('src/components/Authentication/Login/Login'))
+const Home = Loader(
+  lazy(() => import('src/components/Home/Home'))
 );
 
 const AuthenticationRoute = [
   {
     path: '/',
-    element: <Navigate to="schoolList" replace />
+    element: <Navigate to="Home" replace />
   },
   {
-    path: 'schoolList',
-    element: <SchoolList />
+    path: 'Home',
+    element: <Home />
   },
   {
     path: 'forgotPassword',
