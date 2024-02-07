@@ -15,30 +15,10 @@ const Loader = (Component) => (props) =>
 const Notification = Loader(
   lazy(() => import('src/components/Notification/Notification'))
 );
-const Feedback = Loader(lazy(() => import('src/components/Feedback/Feedback')));
-const AddFeedback = Loader(
-  lazy(() => import('src/components/Feedback/AddFeedback'))
-);
 const studentRoutes = [
   {
     path: '/',
     element: <Navigate to="holidays" replace />
-  },
-  {
-    path: 'Notification',
-    element: <Notification />
-  },
-  // {
-  //   path: 'Jsonholder',
-  //   element: <Jsonholder/>
-  // },
-  {
-    path: 'Feedback',
-    element: <Feedback />
-  },
-  {
-    path: 'AddFeedback',
-    element: <AddFeedback />
   },
 ];
 
