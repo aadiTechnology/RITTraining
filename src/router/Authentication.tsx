@@ -13,9 +13,7 @@ const Loader = (Component) => (props) =>
 
 // Dashboards
 //const SchoolList = Loader(lazy(() => import('src/RITeSchool/authentication/schoolList/schoolList')));
-const ForgotPassword = Loader(
-  lazy(() => import('src/components/Authentication/Login/ForgotPassword'))
-);
+
 const TermAndCondition = Loader(
   lazy(
     () =>
@@ -39,11 +37,6 @@ const AuthenticationRoute = [
     path: 'AddEmployee',
     element: <AddEmployee />
   },
-  {
-    path: 'forgotPassword',
-    element: <ForgotPassword />
-  },
-
   {
     path: 'TermAndCondition',
     element: <TermAndCondition />
