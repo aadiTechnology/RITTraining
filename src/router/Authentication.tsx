@@ -27,7 +27,7 @@ const Home = Loader(
 const AuthenticationRoute = [
   {
     path: '/',
-    element: <Navigate to="Home" replace />
+    element: <Navigate to="AddEmployee" replace />
   },
   {
     path: 'Home',
