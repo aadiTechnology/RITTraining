@@ -19,7 +19,7 @@ const DeleteEmployeedetailsApi = (data: IGetEmployeeDetailsBody) => {
   return http.post<string>('DeleteEmployee', data);
 };
 const GetDesignationListApi = () => {
-  return http.post<IAddEmployeeBody>('GetDesignationList');
+  return http.post<IAddEmployeeBody[]>('GetDesignationList');
 };
 
 const EmployeeApi = {
