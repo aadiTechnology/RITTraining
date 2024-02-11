@@ -9,7 +9,10 @@ import Dropdown from "src/libraries/Training/Dropdown"
 import InputField from "src/libraries/Training/InputField"
 import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
-import { AddEmployeeDetails, getDesignationList } from "src/requests/Employee/RequestEmployee"
+import {
+    AddEmployeeDetails, getDesignationList,
+    getEmployeeList
+} from "src/requests/Employee/RequestEmployee"
 import { RootState } from 'src/store'
 
 const AddEmployee = () => {
@@ -28,12 +31,15 @@ const AddEmployee = () => {
 
     const DesignationList = useSelector((state: RootState) => state.Employee.DesignationList);
     const AddEmployeeMsg = useSelector((state: RootState) => state.Employee.AddEmployeeMsg);
+    const EmployeeList = useSelector((state: RootState) => state.Employee.EmployeeList);
+    console.log(EmployeeList, "EmployeeList")
 
     useEffect(() => {
         dispatch(getDesignationList())
     }, [])
     useEffect(() => {
         toast.success(AddEmployeeMsg)
+        dispatch(getEmployeeList())
     }, [AddEmployeeMsg])
 
     const clickEmployeeName = (value) => {
