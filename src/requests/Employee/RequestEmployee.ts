@@ -45,7 +45,7 @@ const Employeeslice = createSlice({
     }
 });
 
-export const AddEmployee =
+export const AddEmployeeDetails =
     (data: IAddEmployeeBody): AppThunk =>
         async (dispatch) => {
             dispatch(Employeeslice.actions.getLoading(true));
@@ -86,11 +86,12 @@ export const getDesignationList =
         async (dispatch) => {
             dispatch(Employeeslice.actions.getLoading(true));
             const response = await EmployeeApi.GetDesignationListApi();
-            const responseData = response.data.map((Item) => {
+            const responseData = response.data.map((Item, i) => {
                 return {
                     Id: Item.ID,
                     Name: Item.DesignationName,
-                    Value: Item.ID.toString()
+                    Value: i
+                    // Value: Item.ID.toString()
                 };
             });
             dispatch(Employeeslice.actions.getDesignationList(responseData));

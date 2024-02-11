@@ -1,13 +1,15 @@
 import { Container, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from 'react-toastify'
+import { IAddEmployeeBody } from "src/interfaces/Employee/IEmployee"
 import ButtonField from "src/libraries/Training/ButtonField"
 import CalendarField from "src/libraries/Training/CalendarField"
 import Dropdown from "src/libraries/Training/Dropdown"
 import InputField from "src/libraries/Training/InputField"
 import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
-import { getDesignationList } from "src/requests/Employee/RequestEmployee"
+import { AddEmployeeDetails, getDesignationList } from "src/requests/Employee/RequestEmployee"
 import { RootState } from 'src/store'
 
 const AddEmployee = () => {
@@ -16,20 +18,23 @@ const AddEmployee = () => {
     const [EmployeeName, setEmployeeName] = useState('')
     const [BirthDate, setBirthDate] = useState('')
     const [DesignationId, setDesignationId] = useState('')
-    const [Email, setEmail] = useState('')
-    const [MobileNo, setMobileNo] = useState('');
+    const [EmailId, setEmailId] = useState('')
+    const [PhoneNo, setPhoneNo] = useState('');
     const [GenderList, setGenderList] = useState([
         { Id: 1, Name: 'Male', Value: "1" },
         { Id: 2, Name: 'FeMale', Value: "2" }
     ])
-    const [GenderId, setGenderId] = useState('')
+    const [Gender, setGender] = useState('')
 
     const DesignationList = useSelector((state: RootState) => state.Employee.DesignationList);
+    const AddEmployeeMsg = useSelector((state: RootState) => state.Employee.AddEmployeeMsg);
 
-    console.log(DesignationList, "DesignationList")
     useEffect(() => {
         dispatch(getDesignationList())
     }, [])
+    useEffect(() => {
+        toast.success(AddEmployeeMsg)
+    }, [AddEmployeeMsg])
 
     const clickEmployeeName = (value) => {
         setEmployeeName(value)
@@ -40,18 +45,30 @@ const AddEmployee = () => {
     const clickDesignation = (value) => {
         setDesignationId(value)
     }
-    const clickEmail = (value) => {
-        setEmail(value)
+    const clickEmailId = (value) => {
+        setEmailId(value)
     }
-    const clickMobileNo = (value) => {
-        setMobileNo(value)
+    const clickPhoneNo = (value) => {
+        setPhoneNo(value)
     }
     const clickGender = (value) => {
-        setGenderId(value)
+        setGender(value)
     }
 
     const clickSubmit = () => {
-        alert('form submitted succefully')
+        const AddEmployeeBody: IAddEmployeeBody = {
+            ID: 0,
+            EmployeeName: EmployeeName,
+            BirthDate: BirthDate,
+            DesignationId: Number(DesignationId),
+            Gender: Number(Gender),
+            EmailId: EmailId,
+            PhoneNo: PhoneNo,
+            DesignationName: "",
+            DID: 0
+
+        }
+        dispatch(AddEmployeeDetails(AddEmployeeBody))
     }
 
     return (
@@ -74,15 +91,15 @@ const AddEmployee = () => {
                             ClickItem={clickDesignation} />
                     </Grid>
                     <Grid item xs={12}>
-                        <InputField Item={Email} Label={'Email'}
-                            ClickItem={clickEmail} />
+                        <InputField Item={EmailId} Label={'Email Id'}
+                            ClickItem={clickEmailId} />
                     </Grid>
                     <Grid item xs={12}>
-                        <InputField Item={MobileNo} Label={'MobileNo'}
-                            ClickItem={clickMobileNo} />
+                        <InputField Item={PhoneNo} Label={'MobileNo'}
+                            ClickItem={clickPhoneNo} />
                     </Grid>
                     <Grid item xs={12}>
-                        <RadioList ItemList={GenderList} Label={'Gender'} DefaultValue={GenderId}
+                        <RadioList ItemList={GenderList} Label={'Gender'} DefaultValue={Gender}
                             ClickItem={clickGender} />
                     </Grid>
                     <Grid item xs={12}>
