@@ -1,19 +1,20 @@
 import { Container, Grid } from "@mui/material"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import ButtonField from "src/libraries/Training/ButtonField"
 import CalendarField from "src/libraries/Training/CalendarField"
 import Dropdown from "src/libraries/Training/Dropdown"
 import InputField from "src/libraries/Training/InputField"
 import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
+import { getDesignationList } from "src/requests/Employee/RequestEmployee"
+import { RootState } from 'src/store'
 
 const AddEmployee = () => {
+    const dispatch = useDispatch();
+
     const [EmployeeName, setEmployeeName] = useState('')
     const [BirthDate, setBirthDate] = useState('')
-    const [DesignationList, setDesignationList] = useState([
-        { Id: 1, Name: 'Admin', Value: "1" },
-        { Id: 2, Name: 'Employee', Value: "2" }
-    ])
     const [DesignationId, setDesignationId] = useState('')
     const [Email, setEmail] = useState('')
     const [MobileNo, setMobileNo] = useState('');
@@ -22,6 +23,13 @@ const AddEmployee = () => {
         { Id: 2, Name: 'FeMale', Value: "2" }
     ])
     const [GenderId, setGenderId] = useState('')
+
+    const DesignationList = useSelector((state: RootState) => state.Employee.DesignationList);
+
+    console.log(DesignationList, "DesignationList")
+    useEffect(() => {
+        dispatch(getDesignationList())
+    }, [])
 
     const clickEmployeeName = (value) => {
         setEmployeeName(value)
