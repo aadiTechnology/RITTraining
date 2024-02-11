@@ -86,6 +86,14 @@ export const getDesignationList =
         async (dispatch) => {
             dispatch(Employeeslice.actions.getLoading(true));
             const response = await EmployeeApi.GetDesignationListApi();
-            dispatch(Employeeslice.actions.getDesignationList(response.data));
+            const responseData = response.data.map((Item) => {
+                return {
+                    Id: Item.ID,
+                    Name: Item.DesignationName,
+                    Value: Item.ID.toString()
+                };
+            });
+
+            dispatch(Employeeslice.actions.getDesignationList(responseData));
         };
 export default Employeeslice.reducer;
