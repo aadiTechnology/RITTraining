@@ -1,10 +1,87 @@
-import { Container } from "@mui/material"
+import { Container, Grid } from "@mui/material"
+import { useState } from "react"
+import ButtonField from "src/libraries/Training/ButtonField"
+import CalendarField from "src/libraries/Training/CalendarField"
+import Dropdown from "src/libraries/Training/Dropdown"
+import InputField from "src/libraries/Training/InputField"
+import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
 
 const AddEmployee = () => {
+    const [EmployeeName, setEmployeeName] = useState('')
+    const [BirthDate, setBirthDate] = useState('')
+    const [DesignationList, setDesignationList] = useState([
+        { Id: 1, Name: 'Admin', Value: "1" },
+        { Id: 2, Name: 'Employee', Value: "2" }
+    ])
+    const [DesignationId, setDesignationId] = useState('')
+    const [Email, setEmail] = useState('')
+    const [MobileNo, setMobileNo] = useState('');
+    const [GenderList, setGenderList] = useState([
+        { Id: 1, Name: 'Male', Value: "1" },
+        { Id: 2, Name: 'FeMale', Value: "2" }
+    ])
+    const [GenderId, setGenderId] = useState('')
+
+    const clickEmployeeName = (value) => {
+        setEmployeeName(value)
+    }
+    const clickBirthDate = (value) => {
+        setBirthDate(value)
+    }
+    const clickDesignation = (value) => {
+        setDesignationId(value)
+    }
+    const clickEmail = (value) => {
+        setEmail(value)
+    }
+    const clickMobileNo = (value) => {
+        setMobileNo(value)
+    }
+    const clickGender = (value) => {
+        setGenderId(value)
+    }
+
+    const clickSubmit = () => {
+        alert('form submitted succefully')
+    }
+
     return (
         <Container>
-            <PageHeader heading={'Add Employee'} subheading={''} />
+            <Grid container direction="column" alignItems="center" justifyContent="center">
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <PageHeader heading={'Add Employee'} subheading={''} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputField Item={EmployeeName} Label={'Employee Name'}
+                            ClickItem={clickEmployeeName} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <CalendarField Item={BirthDate} Label={'Birth Date'}
+                            ClickItem={clickBirthDate} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Dropdown ItemList={DesignationList} Label={'Designation'} DefaultValue={DesignationId}
+                            ClickItem={clickDesignation} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputField Item={Email} Label={'Email'}
+                            ClickItem={clickEmail} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <InputField Item={MobileNo} Label={'MobileNo'}
+                            ClickItem={clickMobileNo} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <RadioList ItemList={GenderList} Label={'Gender'} DefaultValue={GenderId}
+                            ClickItem={clickGender} />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <ButtonField Label={'Submit'} ClickItem={clickSubmit} />
+                    </Grid>
+                </Grid>
+            </Grid>
         </Container>
     )
 }
