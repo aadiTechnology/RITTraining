@@ -9,35 +9,46 @@ import Dropdown from "src/libraries/Training/Dropdown"
 import InputField from "src/libraries/Training/InputField"
 import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
-import { AddEmployeeDetails, getDesignationList, getEmployeeList } from "src/requests/Employee/RequestEmployee"
+import {
+    AddEmployeeDetails, getDesignationList,
+    getEmployeeList
+} from "src/requests/Employee/RequestEmployee"
 import { RootState } from 'src/store'
+import { IsEmailValid, IsPhoneNoValid } from "../Common/Util"
 
 const AddEmployee = () => {
     const dispatch = useDispatch();
 
     const [EmployeeName, setEmployeeName] = useState('')
     const [BirthDate, setBirthDate] = useState('')
-    const [DesignationId, setDesignationId] = useState('')
     const [EmailId, setEmailId] = useState('')
     const [PhoneNo, setPhoneNo] = useState('');
     const [GenderList, setGenderList] = useState([
         { Id: 1, Name: 'Male', Value: "1" },
         { Id: 2, Name: 'FeMale', Value: "2" }
     ])
-    const [Gender, setGender] = useState('')
+    const [Gender, setGender] = useState('0')
+    const [DesignationId, setDesignationId] = useState('0')
+
+    const [EmployeeErrorMessage, setEmployeeErrorMessage] = useState('')
+    const [BirthDateErrorMessage, setBirthDateErrorMessage] = useState('')
+    const [EmailIdErrorMessage, setEmailIdErrorMessage] = useState('')
+    const [PhoneNoErrorMessage, setPhoneNoErrorMessage] = useState('')
+    const [GenderErrorMessage, setGenderErrorMessage] = useState('')
 
     const DesignationList = useSelector((state: RootState) => state.Employee.DesignationList);
     const AddEmployeeMsg = useSelector((state: RootState) => state.Employee.AddEmployeeMsg);
     const EmployeeList = useSelector((state: RootState) => state.Employee.EmployeeList);
-    console.log(EmployeeList, "EmployeeList")
+
 
     useEffect(() => {
         dispatch(getDesignationList())
     }, [])
-
     useEffect(() => {
-        toast.success(AddEmployeeMsg)
-        dispatch(getEmployeeList())
+        if (AddEmployeeMsg != "") {
+            toast.success(AddEmployeeMsg)
+            dispatch(getEmployeeList())
+        }
     }, [AddEmployeeMsg])
 
     const clickEmployeeName = (value) => {
@@ -52,27 +63,61 @@ const AddEmployee = () => {
     const clickEmailId = (value) => {
         setEmailId(value)
     }
-    const clickPhoneNo = (value) => {
-        setPhoneNo(value)
-    }
     const clickGender = (value) => {
         setGender(value)
     }
+    const clickPhoneNo = (value) => {
+        // true if its a number, false if not & cannot enter more than 10 digit
+        if (!isNaN(+value) && value.length < 11)
+            setPhoneNo(value)
+    }
+    const BlurEmailId = () => {
+        setEmailIdErrorMessage(IsEmailValid(EmailId))
+    }
+    const BlurPhoneNo = () => {
+        setPhoneNoErrorMessage(IsPhoneNoValid(PhoneNo))
+    }
 
-    const clickSubmit = () => {
-        const AddEmployeeBody: IAddEmployeeBody = {
-            ID: 0,
-            EmployeeName: EmployeeName,
-            BirthDate: BirthDate,
-            DesignationId: Number(DesignationId),
-            Gender: Number(Gender),
-            EmailId: EmailId,
-            PhoneNo: PhoneNo,
-            DesignationName: "",
-            DID: 0
-
+    const IsFormValid = () => {
+        let returnVal = true
+        if (EmployeeName == "") {
+            setEmployeeErrorMessage("Field is mandatory")
+            returnVal = false
         }
-        dispatch(AddEmployeeDetails(AddEmployeeBody))
+        if (EmailIdErrorMessage != "" && EmailId == "") {
+            setEmailIdErrorMessage("Field is mandatory")
+            returnVal = false
+        }
+        if (PhoneNoErrorMessage != "" && PhoneNo == "") {
+            setPhoneNoErrorMessage("Field is mandatory")
+            returnVal = false
+        }
+        if (Gender == "0") {
+            setGenderErrorMessage("Field is mandatory")
+            returnVal = false
+        }
+        if (BirthDate == "") {
+            setBirthDateErrorMessage("Field is mandatory")
+            returnVal = false
+        }
+        return returnVal
+    }
+    const clickSubmit = () => {
+        if (IsFormValid()) {
+            const AddEmployeeBody: IAddEmployeeBody = {
+                ID: 0,
+                EmployeeName: EmployeeName,
+                BirthDate: BirthDate,
+                DesignationId: Number(DesignationId),
+                Gender: Number(Gender),
+                EmailId: EmailId,
+                PhoneNo: PhoneNo,
+                DesignationName: "",
+                DID: 0
+
+            }
+            dispatch(AddEmployeeDetails(AddEmployeeBody))
+        }
     }
 
     return (
@@ -84,11 +129,13 @@ const AddEmployee = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <InputField Item={EmployeeName} Label={'Employee Name'}
-                            ClickItem={clickEmployeeName} />
+                            ClickItem={clickEmployeeName}
+                            ErrorMessage={EmployeeErrorMessage} />
                     </Grid>
                     <Grid item xs={12}>
                         <CalendarField Item={BirthDate} Label={'Birth Date'}
-                            ClickItem={clickBirthDate} />
+                            ClickItem={clickBirthDate}
+                            ErrorMessage={BirthDateErrorMessage} />
                     </Grid>
                     <Grid item xs={12}>
                         <Dropdown ItemList={DesignationList} Label={'Designation'} DefaultValue={DesignationId}
@@ -96,15 +143,19 @@ const AddEmployee = () => {
                     </Grid>
                     <Grid item xs={12}>
                         <InputField Item={EmailId} Label={'Email Id'}
-                            ClickItem={clickEmailId} />
+                            ClickItem={clickEmailId} BlurItem={BlurEmailId}
+                            ErrorMessage={EmailIdErrorMessage} />
                     </Grid>
                     <Grid item xs={12}>
                         <InputField Item={PhoneNo} Label={'MobileNo'}
-                            ClickItem={clickPhoneNo} />
+                            ClickItem={clickPhoneNo} BlurItem={BlurPhoneNo}
+                            ErrorMessage={PhoneNoErrorMessage}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <RadioList ItemList={GenderList} Label={'Gender'} DefaultValue={Gender}
-                            ClickItem={clickGender} />
+                            ClickItem={clickGender}
+                            ErrorMessage={GenderErrorMessage} />
                     </Grid>
                     <Grid item xs={12}>
                         <ButtonField Label={'Submit'} ClickItem={clickSubmit} />

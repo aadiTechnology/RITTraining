@@ -1,3 +1,20 @@
+export const IsEmailValid = (value) => {
+  let returnVal = ''
+  const emailRegExp = /^\S+@\S+\.\S+$/;
+  if (!emailRegExp.test(value)) {
+    returnVal = 'Invalid email address';
+  }
+  return returnVal
+}
+export const IsPhoneNoValid = (value) => {
+  let returnVal = ''
+  const emailRegExp = /^[0-9]{10}$/;
+  if (!emailRegExp.test(value) && value.length < 11) {
+    returnVal = 'Invalid Phone Number';
+  }
+
+  return returnVal
+}
 export function isFutureDate(date) {
   return (
     new Date(date.toLocaleDateString()) >
@@ -20,16 +37,16 @@ export const getAttendanceLegend = (Status) => {
   return Status == 'Y'
     ? 'mediumturquoise'
     : Status == 'B'
-    ? 'lightcoral'
-    : Status == 'D'
-    ? 'lightsalmon '
-    : Status == 'L'
-    ? 'Skyblue'
-    : Status == 'X'
-    ? 'plum'
-    : Status == 'N'
-    ? 'tomato'
-    : 'salmon';
+      ? 'lightcoral'
+      : Status == 'D'
+        ? 'lightsalmon '
+        : Status == 'L'
+          ? 'Skyblue'
+          : Status == 'X'
+            ? 'plum'
+            : Status == 'N'
+              ? 'tomato'
+              : 'salmon';
 };
 export const getDateMonthYearFormattedDash = (date) => {
   let arrDate = date.split(' ')[0].split('-');
@@ -112,10 +129,10 @@ export const formatAMPM = (date) => {
 export const getDateFormatted = (date) => {
   date = date || new Date();
   let Day = new Date(date).getDate();
-  
+
   const Month = new Date(date).toLocaleString('default', { month: 'short' });
   const Year = new Date(date).getFullYear();
-  return `${Day<10?"0"+Day.toString():Day.toString()} ${Month} ${Year}`;
+  return `${Day < 10 ? "0" + Day.toString() : Day.toString()} ${Month} ${Year}`;
 };
 
 export const getDateFormattedDash = (date) => {
@@ -402,7 +419,7 @@ export const androidCurrentAppVersion = '2.1.1';
 export const appleCurrentAppVersion = '2.0.6';
 export const deviceType =
   typeof window.localStorage.getItem('deviceType') != undefined &&
-  window.localStorage.getItem('deviceType') == 'ios'
+    window.localStorage.getItem('deviceType') == 'ios'
     ? 'iOS'
     : 'Android';
 // export const sitePath = 'https://192.168.1.80';

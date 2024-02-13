@@ -1,6 +1,9 @@
 import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { ErrorDetail } from '../styled/ErrormessageStyled';
 
-const RadioList = ({ ItemList, ClickItem, Label, DefaultValue }) => {
+const RadioList = ({ ItemList, ClickItem, Label, DefaultValue, ErrorMessage = '' }) => {
+    console.log(ErrorMessage);
+
     return (<>
         <RadioGroup value={DefaultValue} onChange={(e) => ClickItem(e.target.value)}>
             <div>
@@ -16,6 +19,7 @@ const RadioList = ({ ItemList, ClickItem, Label, DefaultValue }) => {
                 })}
             </div>
         </RadioGroup>
+        <ErrorDetail>{ErrorMessage}</ErrorDetail>
     </>)
 }
 
