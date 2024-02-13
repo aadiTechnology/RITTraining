@@ -88,10 +88,9 @@ export const getDesignationList =
             const response = await EmployeeApi.GetDesignationListApi();
             const responseData = response.data.map((Item, i) => {
                 return {
-                    Id: Item.ID,
+                    Id: Item.DID,
                     Name: Item.DesignationName,
-                    Value: i
-                    // Value: Item.ID.toString()
+                    Value: Item.DID.toString()
                 };
             });
             dispatch(Employeeslice.actions.getDesignationList(responseData));
