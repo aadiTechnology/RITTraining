@@ -85,7 +85,7 @@ const DynamicList = ({
                         align="center"
                         key={i}
                         onClick={() => {
-                          ClickItem({ Id: i, Action: obj.Action });
+                          ClickItem({ Id: item.Id, Action: obj.Action });
                         }}
                       >
                         {obj.Icon}

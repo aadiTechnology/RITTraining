@@ -35,6 +35,11 @@ const Employeeslice = createSlice({
             state.Loading = false;
             state.deleteEmployeedetailsMsg = action.payload;
         },
+
+        resetDeleteEmployeeDetails(state) {
+            state.Loading = false;
+            state.deleteEmployeedetailsMsg = "";
+        },
         getDesignationList(state, action) {
             state.Loading = false;
             state.DesignationList = action.payload;
@@ -90,6 +95,11 @@ export const deleteEmployeeDetails =
             dispatch(Employeeslice.actions.getLoading(true));
             const response = await EmployeeApi.DeleteEmployeedetailsApi(data);
             dispatch(Employeeslice.actions.deleteEmployeedetails(response.data));
+        };
+export const resetDeleteEmployeeDetails =
+    (): AppThunk =>
+        async (dispatch) => {
+            dispatch(Employeeslice.actions.resetDeleteEmployeeDetails());
         };
 export const getDesignationList =
     (): AppThunk =>

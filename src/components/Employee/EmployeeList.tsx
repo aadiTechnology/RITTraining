@@ -3,14 +3,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Container, Grid } from '@mui/material';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from 'react-toastify';
+import { IGetEmployeeDetailsBody } from 'src/interfaces/Employee/IEmployee';
 import DynamicList from 'src/libraries/Training/DynamicList';
 import PageHeader from 'src/libraries/heading/PageHeader';
-import { getEmployeeList } from "src/requests/Employee/RequestEmployee";
+import { deleteEmployeeDetails, getEmployeeList, resetDeleteEmployeeDetails } from "src/requests/Employee/RequestEmployee";
 import { RootState } from 'src/store';
 
 const EmployeeList = () => {
     const dispatch = useDispatch();
     const EmployeeList = useSelector((state: RootState) => state.Employee.EmployeeList);
+    const deleteEmployeedetailsMsg = useSelector((state: RootState) =>
+        state.Employee.deleteEmployeedetailsMsg);
     const HeaderList = ["Home", "Birth Date", "Email Id", "Phone No", "Edit", "Delete"]
     const IconList = [
         { Id: 1, Icon: <EditIcon />, Action: 'Edit' },
@@ -19,6 +23,21 @@ const EmployeeList = () => {
     useEffect(() => {
         dispatch(getEmployeeList())
     }, [])
+    useEffect(() => {
+        if (deleteEmployeedetailsMsg != "") {
+            toast.success(deleteEmployeedetailsMsg);
+            dispatch(resetDeleteEmployeeDetails())
+            dispatch(getEmployeeList())
+        }
+    }, [deleteEmployeedetailsMsg])
+    const ClickItem = (value) => {
+        if (value.Action == "Delete") {
+            const GetEmployeeDetailsBody: IGetEmployeeDetailsBody = {
+                ID: value.Id
+            }
+            dispatch(deleteEmployeeDetails(GetEmployeeDetailsBody))
+        }
+    }
     return (
         <Container>
             <Grid container spacing={2}>
@@ -26,7 +45,8 @@ const EmployeeList = () => {
                     <PageHeader heading={'Employee List'} subheading={''} />
                 </Grid>
                 <Grid item xs={12}>
-                    <DynamicList HeaderList={HeaderList} ItemList={EmployeeList} IconList={IconList} />
+                    <DynamicList HeaderList={HeaderList} ItemList={EmployeeList}
+                        IconList={IconList} ClickItem={ClickItem} />
                 </Grid>
             </Grid>
         </Container >
