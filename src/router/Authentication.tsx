@@ -14,12 +14,12 @@ const Loader = (Component) => (props) =>
 // Dashboards
 //const SchoolList = Loader(lazy(() => import('src/RITeSchool/authentication/schoolList/schoolList')));
 
-const TermAndCondition = Loader(
-  lazy(
-    () =>
-      import('src/components/Authentication/TermAndConditions/TermAndCondition')
-  )
-);
+const TermAndCondition = Loader(lazy(() =>
+  import('src/components/Authentication/TermAndConditions/TermAndCondition')
+));
+const EmployeeList = Loader(lazy(() =>
+  import('src/components/Employee/EmployeeList')
+));
 const Home = Loader(
   lazy(() => import('src/components/Home/Home'))
 );
@@ -28,6 +28,10 @@ const AuthenticationRoute = [
   {
     path: '/',
     element: <Navigate to="AddEmployee" replace />
+  },
+  {
+    path: 'EmployeeList',
+    element: <EmployeeList />
   },
   {
     path: 'Home',

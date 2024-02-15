@@ -38,7 +38,6 @@ const AddEmployee = () => {
 
     const DesignationList = useSelector((state: RootState) => state.Employee.DesignationList);
     const AddEmployeeMsg = useSelector((state: RootState) => state.Employee.AddEmployeeMsg);
-    const EmployeeList = useSelector((state: RootState) => state.Employee.EmployeeList);
 
 
     useEffect(() => {

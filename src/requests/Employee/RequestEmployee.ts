@@ -58,13 +58,23 @@ export const getEmployeeList =
         async (dispatch) => {
             dispatch(Employeeslice.actions.getLoading(true));
             const response = await EmployeeApi.GetEmployeeListApi();
-            dispatch(Employeeslice.actions.getEmployeeList(response.data));
+            const responseData = response.data.map((Item, i) => {
+                return {
+                    Id: Item.ID,
+                    Text1: Item.EmployeeName,
+                    Text2: Item.BirthDate,
+                    Text3: Item.EmailId,
+                    Text4: Item.PhoneNo
+                };
+            });
+            dispatch(Employeeslice.actions.getEmployeeList(responseData));
         };
 export const getEmployeeDetails =
     (data: IGetEmployeeDetailsBody): AppThunk =>
         async (dispatch) => {
             dispatch(Employeeslice.actions.getLoading(true));
             const response = await EmployeeApi.GetEmployeeDetailsApi(data);
+
             dispatch(Employeeslice.actions.getEmployeeDetails(response.data));
         };
 export const updateEmployeeDetails =
@@ -90,8 +100,7 @@ export const getDesignationList =
                 return {
                     Id: Item.ID,
                     Name: Item.DesignationName,
-                    Value: i
-                    // Value: Item.ID.toString()
+                    Value: Item.DID.toString()
                 };
             });
             dispatch(Employeeslice.actions.getDesignationList(responseData));
