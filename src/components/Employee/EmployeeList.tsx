@@ -3,6 +3,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Container, Grid } from '@mui/material';
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { IGetEmployeeDetailsBody } from 'src/interfaces/Employee/IEmployee';
 import DynamicList from 'src/libraries/Training/DynamicList';
@@ -11,6 +12,8 @@ import { deleteEmployeeDetails, getEmployeeList, resetDeleteEmployeeDetails } fr
 import { RootState } from 'src/store';
 
 const EmployeeList = () => {
+    const navigate = useNavigate();
+
     const dispatch = useDispatch();
     const EmployeeList = useSelector((state: RootState) => state.Employee.EmployeeList);
     const deleteEmployeedetailsMsg = useSelector((state: RootState) =>
@@ -30,6 +33,7 @@ const EmployeeList = () => {
             dispatch(getEmployeeList())
         }
     }, [deleteEmployeedetailsMsg])
+
     const ClickItem = (value) => {
         if (value.Action == "Delete") {
             const GetEmployeeDetailsBody: IGetEmployeeDetailsBody = {
@@ -37,7 +41,11 @@ const EmployeeList = () => {
             }
             dispatch(deleteEmployeeDetails(GetEmployeeDetailsBody))
         }
+        if (value.Action == "Edit") {
+            navigate("../AddEmployee/" + value.Id)
+        }
     }
+
     return (
         <Container>
             <Grid container spacing={2}>

@@ -2,21 +2,33 @@ import { Container, Grid } from "@mui/material"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from 'react-toastify'
-import { IAddEmployeeBody } from "src/interfaces/Employee/IEmployee"
 import ButtonField from "src/libraries/Training/ButtonField"
 import CalendarField from "src/libraries/Training/CalendarField"
 import Dropdown from "src/libraries/Training/Dropdown"
 import InputField from "src/libraries/Training/InputField"
 import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
+
+import { IAddEmployeeBody, IGetEmployeeDetailsBody } from "src/interfaces/Employee/IEmployee"
 import {
     AddEmployeeDetails, getDesignationList,
-    getEmployeeList
+    getEmployeeDetails,
+    resetAddEmployeeDetails
 } from "src/requests/Employee/RequestEmployee"
+
 import { RootState } from 'src/store'
-import { IsEmailValid, IsPhoneNoValid } from "../Common/Util"
+import { IsEmailValid, IsPhoneNoValid, getCalendarFormat } from "../Common/Util"
+
+import { useParams } from 'react-router-dom'
+
+import { useNavigate } from 'react-router-dom'
 
 const AddEmployee = () => {
+    const navigate = useNavigate();
+
+
+    const { Id } = useParams();
+
     const dispatch = useDispatch();
 
     const [EmployeeName, setEmployeeName] = useState('')
@@ -38,15 +50,35 @@ const AddEmployee = () => {
 
     const DesignationList = useSelector((state: RootState) => state.Employee.DesignationList);
     const AddEmployeeMsg = useSelector((state: RootState) => state.Employee.AddEmployeeMsg);
+    const EmployeeDetails = useSelector((state: RootState) => state.Employee.EmployeeDetails);
 
+
+    useEffect(() => {
+        if (EmployeeDetails != null) {
+            setEmployeeName(EmployeeDetails.EmployeeName)
+            setBirthDate(getCalendarFormat(EmployeeDetails.BirthDate))
+            setGender(EmployeeDetails.Gender)
+            setPhoneNo(EmployeeDetails.PhoneNo)
+            setDesignationId(EmployeeDetails.DesignationId)
+            setEmailId(EmployeeDetails.EmailId)
+        }
+    }, [EmployeeDetails])
 
     useEffect(() => {
         dispatch(getDesignationList())
+        const GetEmployeeDetailsBody: IGetEmployeeDetailsBody = {
+            ID: Number(Id)
+        }
+        dispatch(getEmployeeDetails(GetEmployeeDetailsBody))
+
     }, [])
+
+
     useEffect(() => {
         if (AddEmployeeMsg != "") {
             toast.success(AddEmployeeMsg)
-            dispatch(getEmployeeList())
+            dispatch(resetAddEmployeeDetails())
+            navigate("../../EmployeeList")
         }
     }, [AddEmployeeMsg])
 
@@ -104,16 +136,13 @@ const AddEmployee = () => {
     const clickSubmit = () => {
         if (IsFormValid()) {
             const AddEmployeeBody: IAddEmployeeBody = {
-                ID: 0,
+                ID: Number(Id),
                 EmployeeName: EmployeeName,
                 BirthDate: BirthDate,
                 DesignationId: Number(DesignationId),
                 Gender: Number(Gender),
                 EmailId: EmailId,
                 PhoneNo: PhoneNo,
-                DesignationName: "",
-                DID: 0
-
             }
             dispatch(AddEmployeeDetails(AddEmployeeBody))
         }

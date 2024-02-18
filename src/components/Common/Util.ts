@@ -25,6 +25,7 @@ export function isFutureDate(date) {
 export function isFutureDateTime(date) {
   return new Date(date) > new Date();
 }
+
 export function getMonthYear() {
   const date = new Date();
   const Month = new Date(date).toLocaleString('default', { month: 'short' });
@@ -141,6 +142,15 @@ export const getDateFormattedDash = (date) => {
   const Month = new Date(date).toLocaleString('default', { month: 'short' });
   const Year = new Date(date).getFullYear();
   return `${Day}-${Month}-${Year}`;
+};
+export const getCalendarFormat = (date) => {
+  date = date || new Date();
+  let Day = new Date(date).getDate();
+  let DayFormat = Day < 10 ? "0" + Day.toString() : Day.toString();
+  let Month = new Date(date).getMonth();
+  let MonthFormat = Month < 10 ? "0" + Month.toString() : Month.toString();
+  const Year = new Date(date).getFullYear();
+  return `${Year}-${MonthFormat}-${DayFormat}`;
 };
 
 export const getDateFormatWithSpaceAndMonthInString = (date) => {

@@ -42,6 +42,10 @@ const AuthenticationRoute = [
     element: <AddEmployee />
   },
   {
+    path: 'AddEmployee/:Id',
+    element: <AddEmployee />
+  },
+  {
     path: 'TermAndCondition',
     element: <TermAndCondition />
   }

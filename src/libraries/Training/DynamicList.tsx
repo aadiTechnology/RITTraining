@@ -79,6 +79,12 @@ const DynamicList = ({
                   {item.Text3 != undefined && (
                     <TableCell align="center">{item.Text3}</TableCell>
                   )}
+                  {item.Text4 != undefined && (
+                    <TableCell align="center">{item.Text4}</TableCell>
+                  )}
+                  {item.Text5 != undefined && (
+                    <TableCell align="center">{item.Text5}</TableCell>
+                  )}
                   {IconList?.map((obj, i) => {
                     return (
                       <TableCell

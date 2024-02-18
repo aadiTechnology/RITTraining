@@ -19,6 +19,10 @@ const Employeeslice = createSlice({
             state.Loading = false;
             state.AddEmployeeMsg = action.payload;
         },
+        resetAddEmployeeDetails(state) {
+            state.Loading = false;
+            state.AddEmployeeMsg = "";
+        },
         getEmployeeList(state, action) {
             state.Loading = false;
             state.EmployeeList = action.payload;
@@ -58,6 +62,11 @@ export const AddEmployeeDetails =
             dispatch(Employeeslice.actions.getAddEmployeeMsg(response.data));
         };
 
+export const resetAddEmployeeDetails =
+    (): AppThunk =>
+        async (dispatch) => {
+            dispatch(Employeeslice.actions.resetAddEmployeeDetails());
+        };
 export const getEmployeeList =
     (): AppThunk =>
         async (dispatch) => {
