@@ -9,25 +9,23 @@ import InputField from "src/libraries/Training/InputField"
 import RadioList from "src/libraries/Training/RadioList"
 import PageHeader from "src/libraries/heading/PageHeader"
 
-import { IAddEmployeeBody, IGetEmployeeDetailsBody } from "src/interfaces/Employee/IEmployee"
+import { IAddEmployeeBody } from "src/interfaces/Employee/IEmployee"
 import {
     AddEmployeeDetails, getDesignationList,
-    getEmployeeDetails,
     resetAddEmployeeDetails
 } from "src/requests/Employee/RequestEmployee"
 
 import { RootState } from 'src/store'
-import { IsEmailValid, IsPhoneNoValid, getCalendarFormat } from "../Common/Util"
+import { IsEmailValid, IsPhoneNoValid } from "../Common/Util"
 
 import { useParams } from 'react-router-dom'
 
-import { useNavigate } from 'react-router-dom'
 
 const AddEmployee = () => {
-    const navigate = useNavigate();
 
 
     const { Id } = useParams();
+    console.log(Id, "Id")
 
     const dispatch = useDispatch();
 
@@ -53,24 +51,9 @@ const AddEmployee = () => {
     const EmployeeDetails = useSelector((state: RootState) => state.Employee.EmployeeDetails);
 
 
-    useEffect(() => {
-        if (EmployeeDetails != null) {
-            setEmployeeName(EmployeeDetails.EmployeeName)
-            setBirthDate(getCalendarFormat(EmployeeDetails.BirthDate))
-            setGender(EmployeeDetails.Gender)
-            setPhoneNo(EmployeeDetails.PhoneNo)
-            setDesignationId(EmployeeDetails.DesignationId)
-            setEmailId(EmployeeDetails.EmailId)
-        }
-    }, [EmployeeDetails])
 
     useEffect(() => {
         dispatch(getDesignationList())
-        const GetEmployeeDetailsBody: IGetEmployeeDetailsBody = {
-            ID: Number(Id)
-        }
-        dispatch(getEmployeeDetails(GetEmployeeDetailsBody))
-
     }, [])
 
 
@@ -78,7 +61,6 @@ const AddEmployee = () => {
         if (AddEmployeeMsg != "") {
             toast.success(AddEmployeeMsg)
             dispatch(resetAddEmployeeDetails())
-            navigate("../../EmployeeList")
         }
     }, [AddEmployeeMsg])
 
