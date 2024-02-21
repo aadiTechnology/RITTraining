@@ -136,7 +136,7 @@ const AddEmployee = () => {
     const clickSubmit = () => {
         if (IsFormValid()) {
             const AddEmployeeBody: IAddEmployeeBody = {
-                ID: Number(Id),
+                ID: Id == undefined ? 0 : Number(Id),
                 EmployeeName: EmployeeName,
                 BirthDate: BirthDate,
                 DesignationId: Number(DesignationId),
